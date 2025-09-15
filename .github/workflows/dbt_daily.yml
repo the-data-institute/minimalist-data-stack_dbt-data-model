@@ -29,8 +29,8 @@ jobs:
 
       - name: Run dbt deps
         working-directory: dbt
-        run: dbt deps
+        run: uv run dbt deps
 
       - name: Run dbt build
         working-directory: dbt
-        run: dbt build --target=prod
+        run: uv run dbt build --target=prod
