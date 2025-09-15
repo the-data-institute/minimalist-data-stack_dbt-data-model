@@ -24,6 +24,9 @@ jobs:
       - name: Set up Python
         run: uv python install
 
+      - name: Install packages
+        run: uv sync
+
       - name: Run dbt deps
         working-directory: dbt
         run: dbt deps
