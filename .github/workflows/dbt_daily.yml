@@ -1,0 +1,33 @@
+on:
+  schedule:
+    # - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  dbt_run_models:
+    runs-on: ubuntu-latest
+    env:
+      MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Run dbt deps
+        working-directory: dbt
+        run: dbt deps
+
+      - name: Run dbt build
+        working-directory: dbt
+        run: dbt build --target=prod
