@@ -1,0 +1,18 @@
+minimalist_data_stack:
+  target: dev
+  outputs: 
+    dev:
+      type: duckdb
+      schema: mike
+      path:  "md:tdi_tulip?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
+      threads: 4
+      extensions:
+        - httpfs
+        - parquet
+    prod:
+      type: duckdb
+      path:  "md:tdi_tulip?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
+      threads: 4
+      extensions:
+        - httpfs
+        - parquet

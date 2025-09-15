@@ -1,0 +1,365 @@
+version: 2
+
+sources:
+  - name: moco
+    tables:
+      - name: activities
+        description: >
+          One record per activity booked by an employee. Includes billable and non-billable hours.
+        columns:
+          - name: id
+            description: Primary key of the table.
+          - name: date
+            description: Date on which activity was booked.
+          - name: hours
+            description: Number of hours logged on the activity.
+          - name: description
+            description: Description given to the activity booking.
+          - name: billed
+            description: Boolean. Indicates whether activity has been billed to a client yet or not.
+          - name: billable
+            description: Boolean. Indicates whether activity is eligble for billing.
+          - name: invoice_id
+            description: The ID of the invoice the activity was billed under, if any.
+          - name: tag
+            description: Any tags given to the activity booking.
+          - name: remote_service
+            description: Boolean. Indicates whether activity is linked to a ticket in an external service, such as Jira or Trello.
+          - name: project__id
+            description: Identifier of the project the activity was booked on.
+          - name: project__name
+            description: Name of the project the activity was booked on.
+          - name: project__billable
+            description: Boolean. Indicates whether the project the activity was booked on is eligble for billing or not.
+          - name: task__id
+            description: Identifier of the task (a project consists of many tasks) the activity was booked on.
+          - name: task__name
+            description: Name of the task (a project consists of many tasks) the activity was booked on.
+          - name: task__billable
+            description: Boolean. Indicates whether the task (a project consists of many tasks) the activity was booked on is eligble for billing or not.
+          - name: customer__id
+            description: Identifier of the client the project is carried out for.
+          - name: customer__name
+            description: Name of the client the project is carried out for.
+          - name: user__id
+            description: Identifier of the user who booked the activity.
+          - name: user__firstname
+            description: First name of the user who booked the activity.
+          - name: user__lastname
+            description: Last name of the user who booked the activity.
+          - name: created_at
+            description: Timestamp with timezone. Timestamp at which the activity first was created.
+          - name: updated_at
+            description: Timestamp with timezone. Timestamp at which the activity was last updated.
+          - name: hourly_rate
+            description: Hourly rate at which the booked time can be billed to the client.
+          - name: seconds
+            description: Billable seconds of the activity.
+          - name: worked_seconds
+            description: Seconds considered for the user's actual hours.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+      
+      - name: companies
+        description: >
+          One record per company. A company can be either a client or a supplier (of software, licenses or goods).
+        columns:
+          - name: id
+            description: Primary key of the companies table.
+          - name: type
+            description: Type of company (e.g., client, supplier). 
+          - name: name
+            description: Company name.
+          - name: website
+            description: Company website URL. 
+          - name: email
+            description: Primary email address for the company.
+          - name: billing_email_cc
+            description: CC email address for billing correspondence. 
+          - name: phone
+            description: Company phone number.
+          - name: fax
+            description: Company fax number. 
+          - name: address
+            description: Company physical address.
+          - name: country_code
+            description: ISO country code where the company is located. 
+          - name: vat_identifier
+            description: Company VAT identification number.
+          - name: alternative_correspondence_language
+            description: Alternative language code for correspondence. 
+          - name: english_correspondence_language
+            description: Boolean. Indicates if correspondence should be in English.
+          - name: user__id
+            description: Identifier of the user responsible for the company. 
+          - name: user__firstname
+            description: First name of the user responsible for the company.
+          - name: user__lastname
+            description: Last name of the user responsible for the company. 
+          - name: info
+            description: Additional information about the company.
+          - name: footer
+            description: Footer text used in documents for this company. 
+          - name: created_at
+            description: Timestamp with timezone. Timestamp at which the company record was first created.
+          - name: updated_at
+            description: Timestamp with timezone. Timestamp at which the company record was last updated. 
+          - name: iban
+            description: International Bank Account Number for the company.
+          - name: supplier_vat__id
+            description: VAT ID for supplier transactions. 
+          - name: supplier_vat__tax
+            description: VAT tax rate for supplier transactions.
+          - name: supplier_vat__description
+            description: Description of supplier VAT settings. 
+          - name: supplier_vat__reverse_charge
+            description: Boolean. Indicates if supplier VAT uses reverse charge mechanism.
+          - name: supplier_vat__intra_eu
+            description: Boolean. Indicates if supplier VAT is for intra-EU transactions. 
+          - name: supplier_vat__active
+            description: Boolean. Indicates if supplier VAT settings are active.
+          - name: default_invoice_due_days
+            description: Default number of days until invoices are due. 
+          - name: credit_number
+            description: Credit account number for the company.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage. 
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+          - name: identifier
+            description: Company identifier or code. 
+          - name: intern
+            description: Boolean. Indicates if the company is internal.
+          - name: billing_tax
+            description: Tax rate used for billing. 
+          - name: billing_vat__id
+            description: VAT ID for billing transactions.
+          - name: billing_vat__tax
+            description: VAT tax rate for billing transactions. 
+          - name: billing_vat__description
+            description: Description of billing VAT settings.
+          - name: billing_vat__reverse_charge
+            description: Boolean. Indicates if billing VAT uses reverse charge mechanism. 
+          - name: billing_vat__intra_eu
+            description: Boolean. Indicates if billing VAT is for intra-EU transactions.
+          - name: billing_vat__print_gross_total
+            description: Boolean. Indicates if gross total should be printed on billing documents. 
+          - name: billing_vat__notice_tax_exemption
+            description: Tax exemption notice text for billing VAT.
+          - name: billing_vat__notice_tax_exemption_en
+            description: Tax exemption notice text in English for billing VAT. 
+          - name: billing_vat__notice_tax_exemption_alt
+            description: Alternative tax exemption notice text for billing VAT.
+          - name: billing_vat__active
+            description: Boolean. Indicates if billing VAT settings are active. 
+          - name: customer_vat__id
+            description: VAT ID for customer transactions.
+          - name: customer_vat__tax
+            description: VAT tax rate for customer transactions. 
+          - name: customer_vat__description
+            description: Description of customer VAT settings.
+          - name: customer_vat__reverse_charge
+            description: Boolean. Indicates if customer VAT uses reverse charge mechanism. 
+          - name: customer_vat__intra_eu
+            description: Boolean. Indicates if customer VAT is for intra-EU transactions.
+          - name: customer_vat__print_gross_total
+            description: Boolean. Indicates if gross total should be printed on customer documents. 
+          - name: customer_vat__notice_tax_exemption
+            description: Tax exemption notice text for customer VAT.
+          - name: customer_vat__notice_tax_exemption_en
+            description: Tax exemption notice text in English for customer VAT. 
+          - name: customer_vat__notice_tax_exemption_alt
+            description: Alternative tax exemption notice text for customer VAT.
+          - name: customer_vat__active
+            description: Boolean. Indicates if customer VAT settings are active. 
+          - name: currency
+            description: Currency code used for transactions with this company.
+          - name: custom_rates
+            description: Boolean. Indicates if company uses custom billing rates. 
+          - name: include_time_report
+            description: Boolean. Indicates if time reports should be included in billing.
+          - name: billing_notes
+            description: Additional notes to include on billing documents. 
+          - name: default_discount
+            description: Default discount percentage applied to invoices.
+          - name: default_cash_discount
+            description: Default cash discount percentage for early payments. 
+          - name: default_cash_discount_days
+            description: Number of days for cash discount eligibility.
+          - name: debit_number
+            description: Debit account number for the company. 
+
+      - name: companies__projects
+        description: >
+          One record per project associated with a company. Contains project details including identifiers, names, and billing status.
+        columns:
+          - name: id
+            description: Primary key of the project.
+          - name: identifier
+            description: Project identifier or code.
+          - name: name
+            description: Project name.
+          - name: active
+            description: Boolean. Indicates if the project is currently active.
+          - name: billable
+            description: Boolean. Indicates if the project is eligible for billing.
+          - name: _dlt_parent_id
+            description: Parent company record identifier from dlt loading process.
+          - name: _dlt_list_idx
+            description: List index from dlt loading process.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: companies__tags
+        description: >
+          One record per tag associated with a company. Contains tag information linked to companies.
+        columns:
+          - name: value
+            description: The tag value/name.
+          - name: _dlt_parent_id
+            description: Parent record identifier from dlt loading process.
+          - name: _dlt_list_idx
+            description: List index from dlt loading process.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: companies__labels
+        description: >
+          One record per label associated with a company. Contains labels linked to companies.
+        columns:
+          - name: value
+            description: The label value/name.
+          - name: _dlt_parent_id
+            description: Parent record identifier from dlt loading process.
+          - name: _dlt_list_idx
+            description: List index from dlt loading process.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: invoice_payments
+        description: >
+          One record per payment made against an invoice. Contains payment details including amounts, dates, and associated invoice information.
+        columns:
+          - name: id
+            description: Primary key of the payment record.
+          - name: date
+            description: Date on which the payment was made.
+          - name: invoice__id
+            description: Identifier of the invoice the payment was made against.
+          - name: invoice__identifier
+            description: Invoice identifier or number.
+          - name: invoice__title
+            description: Title of the invoice the payment was made against.
+          - name: paid_total
+            description: Total amount paid in the invoice currency.
+          - name: paid_total_in_account_currency
+            description: Total amount paid converted to account currency.
+          - name: currency
+            description: Currency code in which the payment was made.
+          - name: description
+            description: Description or notes about the payment.
+          - name: created_at
+            description: Timestamp with timezone. Timestamp at which the payment record was first created.
+          - name: updated_at
+            description: Timestamp with timezone. Timestamp at which the payment record was last updated.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: purchase_budgets
+        description: >
+          One record per purchase budget. Contains budget information including targets, planned amounts, and remaining balances.
+        columns:
+          - name: id
+            description: Primary key of the budget record.
+          - name: year
+            description: Year the budget applies to.
+          - name: title
+            description: Name or title of the budget.
+          - name: active
+            description: Boolean. Indicates if the budget is currently active.
+          - name: target
+            description: Target amount for the budget.
+          - name: exhaused
+            description: Amount of budget that has been exhausted/used.
+          - name: planned
+            description: Planned amount to be spent from the budget.
+          - name: remaining
+            description: Remaining amount left in the budget.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: purchase_payments
+        description: >
+          One record per payment made for a purchase. Contains payment details including amounts, dates, and associated purchase information.
+        columns:
+          - name: id
+            description: Primary key of the purchase payment record.
+          - name: date
+            description: Date on which the purchase payment was made.
+          - name: purchase__id
+            description: Identifier of the purchase the payment was made for.
+          - name: purchase__identifier
+            description: Purchase identifier or number.
+          - name: purchase__title
+            description: Title of the purchase the payment was made for.
+          - name: total
+            description: Total amount of the payment.
+          - name: currency
+            description: Currency code in which the payment was made.
+          - name: created_at
+            description: Timestamp with timezone. Timestamp at which the purchase payment record was first created.
+          - name: updated_at
+            description: Timestamp with timezone. Timestamp at which the purchase payment record was last updated.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+
+      - name: users
+        description: >
+          One record per user. A user can either be an employee of TDI or an external user that has access to MOCO, such as an accountant.
+        columns:  
+          - name: id
+            description: Primary key of the users table.
+          - name: firstname
+            description: First name of the user.
+          - name: lastname
+            description: Last name of the user.
+          - name: active
+            description: Boolean. Indicates if the user account is currently active.
+          - name: extern
+            description: Boolean. Indicates if the user is external (not an employee).
+          - name: email
+            description: Email address of the user.
+          - name: mobile_phone
+            description: Mobile phone number of the user.
+          - name: work_phone
+            description: Work phone number of the user.
+          - name: home_address
+            description: Home address of the user.
+          - name: info
+            description: Additional information about the user.
+          - name: birthday
+            description: Birth date of the user.
+          - name: custom_properties__personalnummer
+            description: Personal identification number (custom property).
+          - name: unit__id
+            description: Identifier of the organizational unit the user belongs to.
+          - name: unit__name
+            description: Name of the organizational unit the user belongs to.
+          - name: created_at
+            description: Timestamp with timezone. Timestamp at which the user record was first created.
+          - name: updated_at
+            description: Timestamp with timezone. Timestamp at which the user record was last updated.
+          - name: _dlt_load_id
+            description: Identifier of the dlt load job that wrote the data to storage.
+          - name: _dlt_id
+            description: Row key created by dlt during loading.
+          - name: iban
+            description: International Bank Account Number for the user.
